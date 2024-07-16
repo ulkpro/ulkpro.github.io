@@ -24,9 +24,9 @@ author:
   avatar           : "profile.png"
   name             : "Uditha"
   pronouns         : # example: "she/her"  
-  bio              : "Graduate Research Assistant"
-  location         : "Earth"
-  employer         : "University of Iowa"
+  bio              : "Graduate Research Assistant at IIHR Engineering and a Computer Science Masters student"
+  location         : "Iowa City, IA, USA"
+  employer         : "University of Iowa, IA, USA"
   uri              : # URL
   email            : "udithalayank-herathmudiyanselage@uiowa.edu" 
 
@@ -48,7 +48,7 @@ author:
   stackoverflow    : # User number or user number and name (i.e., use "1" or "1/jeff-atwood")    
 
   # Social media
-  bluesky          : "bsky.app" # Replace this with you Bluesky username
+  bluesky          : #
   facebook         : # Username
   flickr           : # Username
   foursquare       : # Username
