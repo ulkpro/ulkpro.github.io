@@ -1,6 +1,6 @@
 ---
-title: "Portfolio item number 1"
-excerpt: "Short description of portfolio item number 1<br/><img src='/images/500x300.png'>"
+title: "Supervised Facial Image Denoiser"
+excerpt: "A supervised autoencoder-based image denoiser using the CelebA dataset, achieving effective noise reduction while preserving facial details.<br/><img src='/images/500x300.png'>"
 collection: portfolio
 ---
 
