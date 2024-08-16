@@ -7,7 +7,11 @@ redirect_from:
   - /about.html
 ---
 
-I am Uditha Herath Mudiyanselage, a dedicated Computer Science professional currently pursuing my Master's degree at the University of Iowa. With a strong foundation in software development and Machine Learning, I specialize in developing and applying advanced ML models to solve complex challenges and drive data-driven decisions. My current research focuses on creating immersive information systems and digital twins for hydrology using Unreal Engine, Cesium, and advanced APIs. Beyond my academic pursuits, I am passionate about mentoring and community engagement, volunteering in educational initiatives and hackathons.
+I am Uditha Herath Mudiyanselage, a dedicated Computer Science professional currently pursuing my Master's degree at the [University of Iowa.](https://cs.uiowa.edu/) I serve as a Graduate Research Assistant at the [UIHI Lab](https://hydroinformatics.uiowa.edu/) under [Professor Ibrahim Demir](https://engineering.uiowa.edu/directory/ibrahim-demir), where I leverage emerging technologies to advance the geospatial domain. My work involves developing digital twins, immersive information systems, and simulations that enhance spatial data visualization and analysis.
+
+In parallel, I focus on deep learning techniques tailored for image-related challenges. This includes designing and implementing models that push the boundaries of image recognition, segmentation, and enhancement. My research aims to integrate these sophisticated deep learning approaches with immersive technologies to create more intuitive and interactive experiences.
+
+Before my current academic endeavors, I spent four years at [Axiata Digital Labs](https://www.axiatadigitallabs.com/) in Sri Lanka, where I worked on enterprise systems, honing my skills in software development and systems integration. I am passionate about mentoring and actively engage in community initiatives, contributing to educational programs and hackathons.
 
 Research
 ======
