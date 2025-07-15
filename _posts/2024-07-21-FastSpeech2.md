@@ -232,6 +232,97 @@ with \( K = 10 \) components.
 4. Add embeddings to the decoder input sequence, alongside pitch and duration information.
 
 ---
+## 3.4 Mel-Spectrogram Decoder (FastSpeech 2)
+
+The **mel-spectrogram decoder** is responsible for generating a time-aligned mel-spectrogram from the prosody-conditioned hidden sequence output by the variance adaptor. It decodes **frame-level hidden states into spectral frames**, independently and in parallel, while preserving **global context** through self-attention.
+
+---
+
+### Input Representation
+
+The input to the mel-spectrogram decoder is a **frame-level hidden sequence** that combines: 
+- output of the Length Regulator
+- pitch embeddings
+- energy embeddings
+- positional encoding added to inject temporal order into the sequence
+
+All components are of shape \\( \mathbb{R}^{T \times d} \\), where \\( T \\) is the number of decoder time steps (aligned with mel frames), and \\( d \\) is the model dimension. They are added **element-wise** to form the final decoder input \\( H' \\).
+
+---
+
+### Positional Encoding:
+
+Transformer architectures lack recurrence or convolution, so they require **positional encodings** to inject information about the position of each token in the sequence.
+
+FastSpeech 2 adopts **sinusoidal positional encodings** as introduced in the original Transformer paper:
+
+$$
+\text{PE}_{(t, 2i)} = \sin\left(\frac{t}{10000^{2i/d}}\right), \quad
+\text{PE}_{(t, 2i+1)} = \cos\left(\frac{t}{10000^{2i/d}}\right)
+$$
+
+These sinusoidal encodings:
+
+- Are **deterministic** and require no learning
+- Encode **relative distance** via linear combinations of sinusoids
+- Allow the decoder to reason about both **absolute and relative positions**
+
+In practice, \\( PE \\) is a tensor of shape \\( \mathbb{R}^{T \times d} \\), added element-wise to the variance-adapted sequence.
+
+> **Why not learn positional encodings?**
+>
+> Learned encodings are an option, work well for shorter, fixed-length inputs, sinusoidal encodings generalize better to **unseen sequence lengths** a useful trait in TTS, because utterances can vary significantly in duration.
+
+---
+
+
+### Architecture
+
+The decoder consists of a stack of **Feed-Forward Transformer (FFT) blocks**, each containing:
+
+- **Multi-head self-attention**:
+  - Enables every time step to attend to all others, modeling long-range dependencies
+- **Position-wise feed-forward network**:
+  - Adds non-linearity and channel mixing
+- **Residual connections + Layer normalization**:
+  - Improves gradient flow and stability
+
+The number of FFT blocks (e.g., 6 layers) and the dimensionality (e.g., 256 or 384) can be adjusted based on the dataset and target latency. Since the model is non-causal, every output frame attends to both past and future context within the input sequence.
+
+The decoder produces a mel-spectrogram:
+
+$$
+\hat{S} = \text{Decoder}(H') \in \mathbb{R}^{T \times D}
+$$
+
+where \\( D \\) is the number of mel frequency channels (typically 80).
+
+---
+
+### Output Conditioning
+
+To improve reconstruction quality, the decoder may be followed by:
+
+- **Linear projection layer** to map Transformer output to \\( D \\) mel channels
+- **Post-Net (optional)**: a 5-layer CNN that predicts a residual spectrogram to refine decoder output (originally used in Tacotron 2)
+
+The output \\( \hat{S} \\) is used as input to the vocoder (e.g., Parallel WaveGAN) for waveform generation.
+
+The decoder is trained using **L1 reconstruction loss**.
+
+---
+
+### Inference
+
+- The decoder operates **in parallel** across all time steps during inference.
+- Unlike autoregressive models, it doesn't rely on previous outputs, making it:
+  - **More stable**
+  - **Faster**
+  - **Better aligned** with input phoneme durations
+
+The mel-spectrogram prediction is next passed to a vocoder for waveform.
+
+---
 
 ## 4. FastSpeech 2s: Direct Text-to-Waveform Generation
 
